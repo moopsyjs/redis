@@ -1,0 +1,8 @@
+{
+    "compilerOptions": {
+        "declaration": true,
+        "outDir": "./main",
+        "lib": ["es2017"],
+        "skipLibCheck": true
+    }
+}

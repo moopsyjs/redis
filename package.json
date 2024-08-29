@@ -1,0 +1,24 @@
+{
+  "name": "@moopsyjs/redis",
+  "version": "1.0.0",
+  "description": "",
+  "main": "./main/index.js",
+  "types": "./main/index.d.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -rf main/ && tsc -p tsconfig.json"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@moopsyjs/core": "^1.0.1",
+    "@moopsyjs/server": "^1.0.0",
+    "@types/ejson": "^2.2.0",
+    "@types/redis": "^4.0.11",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "ejson": "^2.2.3",
+    "redis": "^4.3.0"
+  }
+}
