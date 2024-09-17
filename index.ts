@@ -33,20 +33,25 @@ async function connectServer (server: MoopsyServer<any, any>, options: OptionsTy
         const serverId = server.serverId;
 
         await sub.subscribe(REDIS_KEY, (rawMessage: string) => {
-            const message: RedisMessageType = EJSON.parse(rawMessage);
+            try {
+                const message: RedisMessageType = EJSON.parse(rawMessage);
 
-            if(message.originatorServer !== serverId) {
-                if(message.type === "publish-to-topic") {
-                    server.topics.publish(message.data.topic, message.data.message, true);
-                }
-                if(message.type === "pubsub::publish") {
-                    for(const event of message.data) {
-                        server.topics.publish(event.topic, event.message, true);
+                if(message.originatorServer !== serverId) {
+                    if(message.type === "publish-to-topic") {
+                        server.topics.publish(message.data.topic, message.data.message, true);
+                    }
+                    if(message.type === "pubsub::publish") {
+                        for(const event of message.data) {
+                            server.topics.publish(event.topic, event.message, true);
+                        }
+                    }
+                    if(message.type === "publish-internal" && message.originatorServer !== serverId) {
+                        server.__iv.emit("publish-internal", message.data);
                     }
                 }
-                if(message.type === "publish-internal" && message.originatorServer !== serverId) {
-                    server.__iv.emit("publish-internal", message.data);
-                }
+            }
+            catch(e) {
+                console.error("Error parsing message", e, rawMessage);
             }
         })
 
